@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::resource('products', 'ProductController');
+Route::any('products/search', 'ProductController@search')->name('products.search')->middleware('auth');
+Route::resource('products', 'ProductController')->middleware(['auth', 'check.is.admin']);
 
 /*
 Route::delete('products/{id}', 'ProductController@destroy')->name('products.destroy');
@@ -43,7 +44,7 @@ Route::middleware([])->group(function (){
         });
     });
 });
-*/
+
 
 Route::group([
     'middleware' => [], 
@@ -118,10 +119,16 @@ Route::get('/contato', function(){
     return view('site.contact');
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Auth::routes(['register' => false]);
